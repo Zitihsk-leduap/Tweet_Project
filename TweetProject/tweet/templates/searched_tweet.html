@@ -1,0 +1,61 @@
+{% extends "layout.html" %}
+{% block title %}
+Tweet{% endblock %}
+
+{% block content %}
+{% comment %} <h1 class="text-center text-white">
+  Welcome to the Django Project.
+</h1>
+
+
+<a class="btn btn-primary mb-3" href="{% url 'tweet_create' %}">Create a tweet</a>
+
+<div class="container row gap-3">
+  {% for tweet in tweets %}
+  <div class="card" style="width: 18rem;">
+    <img src="{{tweet.photo.url}}" class="card-img-top" alt="...">
+    <div class="card-body">
+      <h5 class="card-title">{{tweet.user.username}}</h5>
+      <p class="card-text">{{tweet.text}}</p>
+      {% if tweet.user == user%}
+      <a href="{% url 'tweet_edit' tweet.id%}" class="btn btn-primary">Edit</a>
+      <a href="{% url 'tweet_delete' tweet.id%}" class="btn btn-danger">Delete</a>
+    {%endif%}
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+
+{% endblock %} {% endcomment %}
+<h1 class="text-center text-white">
+  Matching Tweets:
+</h1>
+
+{% comment %} <a class="btn btn-primary mb-3" href="{% url 'tweet_create' %}">Create a tweet</a> {% endcomment %}
+
+<div class="container row gap-3 me-10">
+  {% if not results %}
+  <p>No matching tweets.</p>
+  <a href="{% url 'tweet_list' %}">Back to Home</a>
+  {% endif %}
+  {% for tweet in results %}
+  <div class="card" style="width: 18rem;">
+    <!-- Check if tweet.photo has a file associated with it -->
+    {% if tweet.photo %}
+      <img src="{{ tweet.photo.url }}" class="card-img-top" alt="Tweet Photo">
+    {% else %}
+      <img src="/static/images/default-image.jpg" class="card-img-top" alt="Default Image"> <!-- Optional default image -->
+    {% endif %}
+    <div class="card-body">
+      <h5 class="card-title">{{ tweet.user.username }}</h5>
+      <p class="card-text">{{ tweet.text }}</p>
+      {% if tweet.user == user %}
+        <a href="{% url 'tweet_edit' tweet.id %}" class="btn btn-primary">Edit</a>
+        <a href="{% url 'tweet_delete' tweet.id %}" class="btn btn-danger">Delete</a>
+      {% endif %}
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}
